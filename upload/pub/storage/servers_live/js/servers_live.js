@@ -1,58 +1,57 @@
 function ls_parse_data()
 {
-    var _addr =  '';
+    var _addr = _holder = _parent = '';
 
     $("tr[class^='server']").each(function() {
-        serv_addr   = $(this).data('server-address');
+        _addr   = $(this).data('server-address');
         
-        $.getJSON(RN_URL+"servers/fetch/"+ serv_addr +"/", function(data) {            
-            _addr   = data.request;
-            _holder = "tr.server[data-server-address='"+ _addr +"']";
-            
-            if (data.error != 'none')
-            {
-                $(_holder +' td#map').html('offline');
-                $(_holder +' td#players a').html('-');
-                $(_holder +' td#ping').html('-');
+        $.ajax ({
+            type: "GET",
+            dataType: "json",
+            request: _addr,
+            timeout: 3000,
+            url: RN_URL+"servers/fetch/"+ _addr +"/",
+            success: function(data) {
+                                
+                _addr = data.request;
+                _holder = "tr.server[data-server-address='"+ _addr +"']";
                 
-                $("tr.players[data-server-address='"+ _addr +"'] table tbody").html('<tr><td colspan="7" class="center">'+ data.error +'</td></tr>');
-            }
-            else
-            {
+                if (data.error != 'none') {
+                    show_error(_addr, data.error);
+                    return;
+                }
+                
                 $(_holder +' td#map').html( data.details.map )
-                if (data.details.bots > 0)
-                {
-                    $(_holder +' td#players').html( 
-                    '<a href="#show-players">'+ data.details.players_on +'/'+ data.details.players_max +' ('+ data.details.bots +' bots) </a>' )
-                }
-                else
-                {
-                    $(_holder +' td#players a').html( data.details.players_on +'/'+ data.details.players_max )
-                }
+                $(_holder +' td#players a').html( data.details.players_on +'/'+ data.details.players_max )
                 $(_holder +' td#ping').html( data.details.ping +" ms");
                 
-                // append online players
-                var _parent = $("tr.players[data-server-address='"+ _addr +"'] table tbody");
+                // show bots count
+                if (data.details.bots > 0)
+                {
+                    $(_holder +' td#players').append('('+ data.details.bots +' bots)'); 
+                }
                 
+                // online players
+                _parent = $("tr.players[data-server-address='"+ _addr +"'] table tbody");
+                
+                // empty server
                 if (data.players.length == 0)
                 {
                     _parent.html('<tr><td colspan="7" class="center">No players online.</td></tr>');
                 }
-                else
                 {
+                    // append each player
                     $.each(data.players, function(i, item) {
-                       _parent.append('<tr><td colspan="5">'+ item.nick +'</td> <td class="center">'+ item.score +'</td> <td class="center">'+ item.time_gmt +'</td></tr>');
+                        var _append = (item.is_bot) ? '(<em>bot</em>)' : '';
+                        _parent.append('<tr><td colspan="5">'+ item.nick +' '+ _append +'</td> <td class="center">'+ item.score +'</td> <td class="center">'+ item.time_gmt +'</td></tr>');
                     });
                 }
-                
+            },
+            error: function(xhr, status, error) {
+                show_error(this.request, error);
             }
-                        
-        })
-        .error(function() {
-            $("tr[data-server-address='"+ _addr +"'] td#map").html('connection error');
-            $("tr[data-server-address='"+ _addr +"'] td#players").html('-');
-            $("tr[data-server-address='"+ _addr +"'] td#ping").html('-');
         });
+        
                 
     });
     
@@ -75,13 +74,22 @@ function ls_parse_data()
 
 }; 
 
-function waitForJquery(){
+function show_error(address, error)
+{
+    $("tr[data-server-address='"+ address +"'] td#map").html('-');
+    $("tr[data-server-address='"+ address +"'] td#players a").html('-');
+    $("tr[data-server-address='"+ address +"'] td#ping").html('-');
+                
+    $("tr.players[data-server-address='"+ address +"'] table tbody").html('<tr><td colspan="7" class="center">'+ error +'</td></tr>');
+}
+
+function waitForJquery() {
   if(typeof window.jQuery == "undefined"){
     window.setTimeout(waitForJquery,50);
   }
-  else{
+  else {
     ls_parse_data();
   }
 }
 
-waitForJquery();
+waitForJquery(); 

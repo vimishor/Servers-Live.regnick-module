@@ -32,9 +32,10 @@ class Servers extends MY_Controller
         $this->load->library('ls_lib');
         
         // setup module custom assets
+        $append = (!is_dev()) ? '.min' : '';
         $this->template->module_assets = base_url('pub/storage/servers_live');
-        $this->template->append_metadata('<link href="'. $this->template->module_assets .'/css/servers_live.css" rel="stylesheet">');
-        $this->template->append_metadata('<script src="'. $this->template->module_assets .'/js/servers_live.min.js"></script>');
+        $this->template->append_metadata('<link href="'. $this->template->module_assets .'/css/servers_live'.$append.'.css" rel="stylesheet">');
+        $this->template->append_metadata('<script src="'. $this->template->module_assets .'/js/servers_live'.$append.'.js"></script>');
     }
 
     /**
@@ -46,9 +47,12 @@ class Servers extends MY_Controller
      */
     public function fetch($server)
     {
-        if (!$this->input->is_ajax_request())
+        if (!is_dev())
         {
-            die('invalid request');
+            if (!$this->input->is_ajax_request())
+            {
+                die('invalid request');
+            }
         }
         
         if (is_dev())
@@ -87,7 +91,6 @@ class Servers extends MY_Controller
             'page_title'    => lang('community_servers'),
             'page_subtitle' => 'Play with joy !',
             'servers'       => $servers,
-            //'info'          => $live,
         );
         
         $this->template->set_layout('one_col')->build('list', $data);

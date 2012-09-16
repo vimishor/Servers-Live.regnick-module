@@ -6,7 +6,7 @@
             <p class="subheader"><?php echo $page_subtitle; ?></p>
         </div>
         <div class="content-data">
-            <table class="table table-striped table-bordered table-condensed">
+            <table class="table table-striped table-bordered table-condensed table-servers">
             <thead>
                 <tr>
                     <th style="width: 14px;" class="center">#</th>
@@ -27,7 +27,7 @@
                     <?php foreach ($servers as $server): ?>
                     <tr class="server" data-server-address="<?php echo $server->address; ?>">
                         <td class="center"><?php echo $server->ID; ?></td>
-                        <td><?php echo ($server->name != '') ? $server->name : $server->address; ?></td>
+                        <td><?php echo ($server->name != '') ? strtolower($server->name) : strtolower($server->address); ?></td>
                         <td class="center" id="map"><img src="<?php echo $module_assets; ?>/img/ajax-loader_small.gif"></td>
                         <td class="center" id="players"><a href="#show-players" class="show-players"><img src="<?php echo $module_assets; ?>/img/ajax-loader_small.gif"></a></td>
                         <td class="center" id="ping"><img src="<?php echo $module_assets; ?>/img/ajax-loader_small.gif"></td>

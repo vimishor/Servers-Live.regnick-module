@@ -19,7 +19,7 @@
  * @see         http://github.com/koraktor/steam-condenser/
  * @package		GoldSrc_Server_Info
  * @author      Alexandru G.
- * @version     1.0.1
+ * @version     1.0.2
  */
 class GoldSource
 {
@@ -30,7 +30,7 @@ class GoldSource
         '103' => 'Can\'t connect to specifed address.',
         '104' => 'Invalid address.',
         '105' => 'Game unknown.',
-        '106' => 'Banned.'
+        '106' => 'Uhh! I\'m banned :-('
     );
     
     /**
@@ -211,12 +211,10 @@ class GoldSource
             if (strpos($msg, 'banned') !== false )
             {
                 $this->set_error($this->get_message(106));
-                //$server['error']    = 'Uhh! I\'m banned :-(';
                 return false;
             }
             else
             {
-                //$server['error']    = $msg;
                 $this->set_error($msg);
                 return false;
             }
@@ -274,21 +272,45 @@ class GoldSource
         $this->index = 0;   // reset position
         $this->skip(4);     // skip 5 bytes
         
-        $type               = $this->getbyte(); // should be equal to D
+        $type               = $this->getchar(); // should be equal to D
         $online_players     = $this->getbyte();
-
-        $players = array();
+        
+        if ($type == 'D')
+        {
+            $players = array();
                 
-        for($i=0;$i<$online_players;$i++)
-		{
-            $this->skip(1); // skip
-            $players[$i]['id']       = $this->getbyte(); 
-            $players[$i]['nick']     = $this->getstring();
-            $players[$i]['score']    = $this->getlong();
-            $players[$i]['time_int'] = (int)$this->getfloat();
-            $players[$i]['time_gmt'] =  GMDate( ( ($players[$i]['time_int']) > 3600 ? "H:i:s" : "i:s" ), $players[$i]['time_int'] );
+            for($i=0;$i<$online_players;$i++)
+    		{
+                //$this->skip(1); // skip
+                $players[$i]['id']          = $this->getbyte(); 
+                $players[$i]['nick']        = htmlspecialchars($this->getstring());
+                $players[$i]['score']       = $this->getlong();
+                $players[$i]['time_int']    = (int)$this->getfloat();
+                $players[$i]['time_gmt']    =  GMDate( ( ($players[$i]['time_int']) > 3600 ? "H:i:s" : "i:s" ), $players[$i]['time_int'] );
+                $players[$i]['is_bot']      = ($players[$i]['score'] == '-1000') ? true : false;
+            }
+            
+            return $players;
+            
+        }        
+        elseif ($type == 'l')
+        {
+            $msg = $this->getstring();
+            
+            if (strpos($msg, 'banned') !== false )
+            {
+                $this->set_error($this->get_message(106));
+                return false;
+            }
+            else
+            {
+                $this->set_error($msg);
+                return false;
+            }
         }
-        return $players;
+        
+        $this->set_error($this->getstring());
+        return false;
     }
     
     // ------------------------------------------------------------------------
