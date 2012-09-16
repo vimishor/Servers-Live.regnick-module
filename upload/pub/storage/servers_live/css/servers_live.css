@@ -1,0 +1,15 @@
+.bla { padding: 0; }
+th.center { text-align: center; }
+.table tbody tr:hover td.nested { background-color: #fff; }
+
+/** Players list table **/
+.table-players tbody tr:nth-child(odd) td {
+    background-color: #fff;
+} 
+.table-players thead tr:nth-child(odd) th { 
+    background-color: #F2F2F2;
+}
+
+
+.table-players thead th { color: #555; }
+.table-players tbody td { color: #777; } 
