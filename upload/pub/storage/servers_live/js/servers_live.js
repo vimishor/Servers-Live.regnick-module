@@ -1,4 +1,5 @@
-$(document).ready(function() { 
+function ls_parse_data()
+{
     var _addr =  '';
 
     $("tr[class^='server']").each(function() {
@@ -69,5 +70,16 @@ $(document).ready(function() {
             _parent.addClass('hide');
         } 
     });
-    
-}); 
+
+}; 
+
+function waitForJquery(){
+  if(typeof window.jQuery == "undefined"){
+    window.setTimeout(waitForJquery,50);
+  }
+  else{
+    ls_parse_data();
+  }
+}
+
+waitForJquery();
