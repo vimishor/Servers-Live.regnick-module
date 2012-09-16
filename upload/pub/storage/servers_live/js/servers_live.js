@@ -12,8 +12,10 @@ function ls_parse_data()
             if (data.error != 'none')
             {
                 $(_holder +' td#map').html('offline');
-                $(_holder +' td#players').html('-');
+                $(_holder +' td#players a').html('-');
                 $(_holder +' td#ping').html('-');
+                
+                $("tr.players[data-server-address='"+ _addr +"'] table tbody").html('<tr><td colspan="7" class="center">'+ data.error +'</td></tr>');
             }
             else
             {
