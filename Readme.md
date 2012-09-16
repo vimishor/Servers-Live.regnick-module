@@ -19,17 +19,17 @@
 
 ## FAQ
 
-1. Live data is cached ?
+1. Live data is cached ?  
 Yes, data fetched from servers, it is cached for 5 mins.
 
-2. How can I change the default cache time ?
+2. How can I change the default cache time ?  
 Edit `app/modules/servers/config/servers.php` and change value for `$config['cache_time']`.
 
-3. Can i use this module as a frontpage (_aka index_) ?
+3. Can i use this module as a frontpage (_aka index_) ?  
 Yes, you can. Edit `app/config/routes` and change value for `$route['default_controller']`:
     ```$route['default_controller']        = "servers/show";```
 
-4. How can I prevent the frontpage to change on default one, after each [CStrike-Regnick](https://github.com/vimishor/CStrike-Regnick) update ?
+4. How can I prevent the frontpage to change on default one, after each [CStrike-Regnick](https://github.com/vimishor/CStrike-Regnick) update ?  
 Copy `app/config/routes.php` to `app/config/production/routes.php` and any changes you made to that file will be preserved accross updates.
 
 ## LICENSE
