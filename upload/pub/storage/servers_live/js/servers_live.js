@@ -21,7 +21,7 @@ function ls_parse_data()
                     return;
                 }
                 
-                $(_holder +' td#map').html( data.details.map )
+                $(_holder +' td#map').html( data.details.map.toLowerCase() )
                 $(_holder +' td#players a').html( data.details.players_on +'/'+ data.details.players_max )
                 $(_holder +' td#ping').html( data.details.ping +" ms");
                 
@@ -84,12 +84,12 @@ function show_error(address, error)
 }
 
 function waitForJquery() {
-  if(typeof window.jQuery == "undefined"){
-    window.setTimeout(waitForJquery,50);
-  }
-  else {
-    ls_parse_data();
-  }
+    if(typeof window.jQuery == "undefined"){
+        window.setTimeout(waitForJquery,50);
+    }
+    else {
+        ls_parse_data();
+    }
 }
 
 waitForJquery(); 

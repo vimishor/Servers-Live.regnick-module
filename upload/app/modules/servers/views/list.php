@@ -11,11 +11,11 @@
                 <tr>
                     <th style="width: 14px;" class="center">#</th>
                     <th><?php echo lang('server'); ?></th>
-                    <th style="width: 40px;" class="center">Map</th>
-                    <th style="width: 20px;" class="center">Players</th>
-                    <th style="width: 40px;" class="center">Ping</th>
+                    <th style="width: 40px;"><?php echo lang('sl_map'); ?></th>
+                    <th style="width: 20px;" class="center"><?php echo lang('sl_players'); ?></th>
+                    <th style="width: 40px;" class="center"><?php echo lang('sl_ping'); ?></th>
                     <th style="width: 100px;" class="center"><?php echo lang('view'); ?></th>
-                    <th style="width: 20px;">Connect</th>
+                    <th style="width: 20px;"><?php echo lang('sl_connect'); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,7 @@
                         <td class="center" id="ping"><img src="<?php echo $module_assets; ?>/img/ajax-loader_small.gif"></td>
                         <td><a rel="tooltip" title="<?php echo lang('server_team'); ?>" href="<?php echo site_url('server/'.$server->ID.'/team/'); ?>"><?php echo lang('team');?></a> | <a rel="tooltip" title="<?php echo lang('server_members');?>" href="<?php echo site_url('server/'.$server->ID.'/members/'); ?>"><?php echo lang('members');?></a></td>
                         <td class="center">
-                            <a rel="tooltip" title="<?php echo lang('connect_with_hlsw'); ?>" href="hlsw://<?php echo $server->address; ?>"><img src="<?php echo $module_assets; ?>/img/icon_hlsw.png">
+                            <a rel="tooltip" title="<?php echo lang('sl_connect_with_hlsw'); ?>" href="hlsw://<?php echo $server->address; ?>"><img src="<?php echo $module_assets; ?>/img/icon_hlsw.png"></a>
                             <a rel="tooltip" title="<?php echo lang('connect_with_steam'); ?>" href="steam://connect/<?php echo $server->address; ?>"><img src="<?php echo $module_assets; ?>/img/icon_steam.png"></a>
                         </td>
                     </tr>
@@ -41,9 +41,9 @@
                         <td colspan="7" class="nested">
                             <table class="table table-bordered table-condensed table-players">
                                 <thead>
-                                    <th colspan="5">Nickname</th>
-                                    <th style="width: 6px;" class="center">Score</th>
-                                    <th style="width: 10px;" class="center">Online</th>
+                                    <th colspan="5"><?php echo lang('sl_nickname'); ?></th>
+                                    <th style="width: 6px;" class="center"><?php echo lang('sl_score'); ?></th>
+                                    <th style="width: 10px;" class="center"><?php echo lang('sl_online'); ?></th>
                                 </thead>
                                 <tbody>
                                     <!-- online players -->
